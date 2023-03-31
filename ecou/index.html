@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="Hack.css">
+    <meta charset="utf-8" />
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario&key=An4uEBHK3WXHb0jq_hEiM8rrGDq8ai-sz8YmC9POcHvAWbNYzk2wgf_LJhgzZ2MQ' async defer></script>
+	<div id="myMap" style='position:relative;width:1200px;height:400px;'></div>
+    <script type='text/javascript'>
+        var map, pin;
+
+        function loadMapScenario() {
+            map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                center: new Microsoft.Maps.Location(47.6062, -122.3321), // Center the map at Seattle
+                zoom: 12
+            });
+
+            Microsoft.Maps.Events.addHandler(map, 'click', addPin); // Add a click event listener to the map
+        }
+
+        function addPin(e) {
+            if (!pin) { // Check if a pin has already been added
+                var location = e.location; // Get the location of the clicked point
+                pin = new Microsoft.Maps.Pushpin(location, { // Create a pushpin object at the clicked location
+                    draggable: true // Make the pin draggable
+                });
+		// Add an info box to the pushpin with text
+		var infobox = new Microsoft.Maps.Infobox(location, {
+            title: 'My Pin',
+            description: 'Lots of plastic near the highway. Join me for clean up @2pm'
+        });
+        infobox.setMap(map);
+        pin.metadata = { description: 'This is my pin!' };
+              
+		map.entities.push(pin); // Add the pin to the map
+
+                Microsoft.Maps.Events.addHandler(pin, 'dragend', function () { // Add a dragend event listener to the pin
+                    var location = pin.getLocation(); // Get the new location of the pin after it's been dragged
+                    console.log(location); // Log the new location to the console (replace with your own code to store the location)
+                });
+            }
+        }
+    </script>
+
+    <script>
+        var x = document.getElementById("demo");
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+        }
+    </script>
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+				<img src="logo1.png" class="logo">
+			
+            <ul>
+                <li><a href="location.html">About Us</a></li>
+                <li><a href="information.html">Information</a></li>
+				<li><a href="ads.html">Support The Environment</a></li>
+                <li><a href="games.html">Games</a></li>
+				<li><a href="community.html">Community</a></li>
+                <li><a href="profile.html">My Profile</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h1> There is no Planet B.</h1>
+            <p> View the map and show up for our Earth </p>
+        </div>
+        <div id="myMap" style='position:relative;width:600px;height:400px;'></div>
+    </div>
+
+</body>
+</html>
